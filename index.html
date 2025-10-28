@@ -447,6 +447,10 @@
                     customData: {
                         tool: tool,
                         device_type: deviceType
+                    },
+                    settings: {
+                        successUrl: 'https://pixy-tools.netlify.app/?success=true&tool=' + tool,
+                        closeUrl: 'https://pixy-tools.netlify.app/'
                     }
                 });
                 console.log('Checkout opened successfully');
