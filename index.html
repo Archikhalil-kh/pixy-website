@@ -430,7 +430,7 @@
             }
         };
         
-        // Open checkout - Using direct Paddle links (simpler approach)
+        // Open checkout
         function openCheckout(tool, deviceType) {
             const productId = productIds[tool][deviceType];
             
@@ -441,11 +441,13 @@
                 return;
             }
             
-            // Generate Paddle checkout URL
-            const checkoutUrl = `https://sandbox-buy.paddle.com/checkout/custom/${productId}?passthrough=${encodeURIComponent(JSON.stringify({tool: tool, device_type: deviceType}))}`;
-            
-            // Open in new tab
-            window.open(checkoutUrl, '_blank');
+            // Simplest possible Paddle checkout
+            Paddle.Checkout.open({
+                items: [{ 
+                    priceId: productId, 
+                    quantity: 1 
+                }]
+            });
         }
         
         // Handle URL parameters (from Revit License Manager)
