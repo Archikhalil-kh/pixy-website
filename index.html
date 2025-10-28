@@ -430,7 +430,7 @@
             }
         };
         
-        // Open checkout
+        // Open checkout - Using direct Paddle links (simpler approach)
         function openCheckout(tool, deviceType) {
             const productId = productIds[tool][deviceType];
             
@@ -441,23 +441,11 @@
                 return;
             }
             
-            try {
-                Paddle.Checkout.open({
-                    items: [{ priceId: productId, quantity: 1 }],
-                    customData: {
-                        tool: tool,
-                        device_type: deviceType
-                    },
-                    settings: {
-                        successUrl: 'https://pixy-tools.netlify.app/?success=true&tool=' + tool,
-                        closeUrl: 'https://pixy-tools.netlify.app/'
-                    }
-                });
-                console.log('Checkout opened successfully');
-            } catch (error) {
-                console.error('Paddle checkout error:', error);
-                alert('Error opening checkout: ' + error.message);
-            }
+            // Generate Paddle checkout URL
+            const checkoutUrl = `https://sandbox-buy.paddle.com/checkout/custom/${productId}?passthrough=${encodeURIComponent(JSON.stringify({tool: tool, device_type: deviceType}))}`;
+            
+            // Open in new tab
+            window.open(checkoutUrl, '_blank');
         }
         
         // Handle URL parameters (from Revit License Manager)
