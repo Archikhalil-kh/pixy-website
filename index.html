@@ -441,12 +441,16 @@
                 return;
             }
             
-            // Simplest possible Paddle checkout
+            // Paddle checkout with settings
             Paddle.Checkout.open({
                 items: [{ 
                     priceId: productId, 
                     quantity: 1 
-                }]
+                }],
+                settings: {
+                    successUrl: 'https://pixy-tools.netlify.app/?success=true',
+                    displayMode: 'overlay'
+                }
             });
         }
         
