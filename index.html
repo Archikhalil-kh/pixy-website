@@ -401,7 +401,7 @@
         // Initialize Paddle
         Paddle.Environment.set('sandbox'); // Change to 'production' when going live
         Paddle.Setup({ 
-            token: 'test_5cbfccf8316a56db9436718a7a5',
+            token: 'test_bdea29de48efaf52098077ef913',
             eventCallback: function(event) {
                 console.log('Paddle Event:', event);
                 if (event.name === 'checkout.completed') {
@@ -441,12 +441,17 @@
                 return;
             }
             
-            // Paddle checkout with settings
+            // Paddle checkout with settings and custom data
             Paddle.Checkout.open({
                 items: [{ 
                     priceId: productId, 
                     quantity: 1 
                 }],
+                customData: {
+                    tool: tool,
+                    deviceType: deviceType,
+                    source: 'pixy-website'
+                },
                 settings: {
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
                     displayMode: 'overlay'
