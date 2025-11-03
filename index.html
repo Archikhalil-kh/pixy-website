@@ -312,69 +312,6 @@
                 </ul>
             </div>
             
-            <!-- Parameter Modifier -->
-            <div class="tool-card">
-                <div class="tool-header">
-                    <span class="tool-icon">⚙️</span>
-                    <h2 class="tool-title">Parameter Modifier</h2>
-                </div>
-                <span class="license-type-badge subscription">Subscription</span>
-                <p class="tool-description">
-                    Bulk modify parameters across multiple elements efficiently. Save time on repetitive parameter editing tasks.
-                </p>
-                <div class="pricing-options">
-                    <div class="price-option">
-                        <div class="device-type">Single Device</div>
-                        <div class="price">$30</div>
-                        <div class="billing-cycle">/month</div>
-                        <button class="buy-button" onclick="openCheckout('modifier', 'single')">Subscribe</button>
-                    </div>
-                    <div class="price-option">
-                        <div class="device-type">3 Devices</div>
-                        <div class="price">$50</div>
-                        <div class="billing-cycle">/month</div>
-                        <button class="buy-button" onclick="openCheckout('modifier', 'multi')">Subscribe</button>
-                    </div>
-                </div>
-                <ul class="features-list">
-                    <li>Batch parameter editing</li>
-                    <li>Smart value mapping</li>
-                    <li>Formula support</li>
-                    <li>Monthly billing</li>
-                </ul>
-            </div>
-            
-            <!-- 3D Surface Generator -->
-            <div class="tool-card">
-                <div class="tool-header">
-                    <span class="tool-icon">🏔️</span>
-                    <h2 class="tool-title">3D Surface Generator</h2>
-                </div>
-                <span class="license-type-badge subscription">Subscription</span>
-                <p class="tool-description">
-                    Create complex 3D surfaces and fabric-like deformations for advanced architectural modeling and design.
-                </p>
-                <div class="pricing-options">
-                    <div class="price-option">
-                        <div class="device-type">Single Device</div>
-                        <div class="price">$30</div>
-                        <div class="billing-cycle">/month</div>
-                        <button class="buy-button" onclick="openCheckout('surface', 'single')">Subscribe</button>
-                    </div>
-                    <div class="price-option">
-                        <div class="device-type">3 Devices</div>
-                        <div class="price">$50</div>
-                        <div class="billing-cycle">/month</div>
-                        <button class="buy-button" onclick="openCheckout('surface', 'multi')">Subscribe</button>
-                    </div>
-                </div>
-                <ul class="features-list">
-                    <li>Advanced surface modeling</li>
-                    <li>Fabric deformation effects</li>
-                    <li>Parametric controls</li>
-                    <li>Monthly billing</li>
-                </ul>
-            </div>
         </div>
 
         <div class="requirements">
@@ -420,14 +357,6 @@
                 single: 'pri_01k8m40znqe2bf2aj6wymnmwk6',
                 multi: 'pri_01k8m3zf1gn0aq6nfer5hxmn1v'
             },
-            modifier: {
-                single: 'pri_01k8m3q7dbz085bggmjvym3gwx',
-                multi: 'pri_01k8m3ssrwmyactpm5nkeyh6ec'
-            },
-            surface: {
-                single: 'pri_01k8m42pb2r0qnchq0x6akaqz4',
-                multi: 'pri_01k8m43zpp5j82h6kgfrtxqhz0'
-            }
         };
         
         // Open checkout
@@ -470,9 +399,7 @@
                     const toolCards = document.querySelectorAll('.tool-card');
                     const toolMap = {
                         'pattern': 0,
-                        'filter': 1,
-                        'modifier': 2,
-                        'surface': 3
+                        'filter': 1
                     };
                     const index = toolMap[tool];
                     if (index !== undefined && toolCards[index]) {
