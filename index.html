@@ -450,11 +450,16 @@
                 customData: {
                     tool: tool,
                     deviceType: deviceType,
+                    maxDevices: deviceType === 'single' ? 1 : 3,
                     source: 'pixy-website'
                 },
                 settings: {
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
                     displayMode: 'overlay'
+                },
+                customer: {
+                    // Email will be entered by customer during checkout
+                    // Paddle will include this in webhook automatically
                 }
             });
         }
