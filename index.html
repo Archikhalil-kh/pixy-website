@@ -370,16 +370,48 @@
                 return;
             }
             
-            // Get customer email from user input (optional but recommended)
+            // Get customer email from user input (REQUIRED for license delivery)
             // This ensures we have the email even if Paddle doesn't send it in webhook
             let customerEmail = '';
-            const emailInput = prompt('Please enter your email address for license delivery:');
-            if (emailInput && emailInput.includes('@')) {
-                customerEmail = emailInput.trim();
+            let emailValid = false;
+            
+            while (!emailValid) {
+                const emailInput = prompt('Please enter your email address for license delivery:\n\nThis email will receive your license key.');
+                if (emailInput) {
+                    const trimmedEmail = emailInput.trim();
+                    // Basic email validation
+                    if (trimmedEmail.includes('@') && trimmedEmail.includes('.') && trimmedEmail.length > 5) {
+                        customerEmail = trimmedEmail;
+                        emailValid = true;
+                    } else {
+                        alert('Please enter a valid email address.');
+                    }
+                } else {
+                    // User cancelled - ask if they want to continue without email
+                    if (confirm('Email is required for license delivery. Do you want to continue anyway?\n\nNote: You may need to contact support to receive your license key.')) {
+                        emailValid = true; // Continue but email will be empty
+                    }
+                }
             }
             
             // Calculate max devices based on device type
             const maxDevices = deviceType === 'multi' ? 3 : 1;
+            
+            // Prepare custom data - always include even if email is empty
+            const customDataObj = {
+                tool: tool,
+                deviceType: deviceType,
+                source: 'pixy-website',
+                maxDevices: maxDevices
+            };
+            
+            // Only add email if provided
+            if (customerEmail) {
+                customDataObj.email = customerEmail;
+                console.log('📧 Customer email for license delivery:', customerEmail);
+            } else {
+                console.warn('⚠️  No email provided - license key will need to be retrieved manually');
+            }
             
             // Paddle checkout with settings and custom data
             Paddle.Checkout.open({
@@ -387,13 +419,7 @@
                     priceId: productId, 
                     quantity: 1 
                 }],
-                customData: {
-                    tool: tool,
-                    deviceType: deviceType,
-                    source: 'pixy-website',
-                    email: customerEmail, // Include email in custom data
-                    maxDevices: maxDevices // Include max devices
-                },
+                customData: customDataObj,
                 settings: {
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
                     displayMode: 'overlay'
