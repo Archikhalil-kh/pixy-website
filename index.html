@@ -336,17 +336,27 @@
 
     <script>
         // Initialize Paddle - PRODUCTION MODE
-        Paddle.Environment.set('production');
-        Paddle.Setup({ 
-            // Client Token for frontend (different from API Key)
-            token: 'live_1ddffc10cdabaa6c476516d5a8d', // Production Client Token
-            eventCallback: function(event) {
-                console.log('Paddle Event:', event);
-                if (event.name === 'checkout.completed') {
-                    alert('Purchase successful! Check your email for your license key.');
+        try {
+            Paddle.Environment.set('production');
+            Paddle.Setup({ 
+                // Client Token for frontend (different from API Key)
+                token: 'live_1ddffc10cdabaa6c476516d5a8d', // Production Client Token
+                eventCallback: function(event) {
+                    console.log('Paddle Event:', event);
+                    if (event.name === 'checkout.completed') {
+                        alert('Purchase successful! Check your email for your license key.');
+                    }
+                    if (event.name === 'checkout.error') {
+                        console.error('Paddle Checkout Error:', event);
+                        alert('Checkout error: ' + (event.data?.message || 'Unknown error'));
+                    }
                 }
-            }
-        });
+            });
+            console.log('✅ Paddle initialized successfully');
+        } catch (error) {
+            console.error('❌ Paddle initialization error:', error);
+            alert('Failed to initialize payment system. Please refresh the page.');
+        }
         
         // Price IDs mapping - PRODUCTION
         const productIds = {
@@ -364,35 +374,51 @@
         function openCheckout(tool, deviceType) {
             const productId = productIds[tool][deviceType];
             
-            console.log('Opening checkout for:', tool, deviceType, 'Product ID:', productId);
+            console.log('Opening checkout for:', tool, deviceType, 'Price ID:', productId);
             
             if (!productId) {
                 alert('Product configuration error. Please contact support.');
                 return;
             }
             
+            // Check if Paddle is initialized
+            if (typeof Paddle === 'undefined') {
+                console.error('❌ Paddle is not loaded');
+                alert('Payment system not loaded. Please refresh the page.');
+                return;
+            }
+            
             // Calculate max devices based on device type
             const maxDevices = deviceType === 'multi' ? 3 : 1;
             
-            // Paddle checkout with settings and custom data
-            // Note: Email will be in webhook from Paddle, not in customData
-            Paddle.Checkout.open({
-                items: [{ 
-                    priceId: productId, 
-                    quantity: 1 
-                }],
-                customData: {
-                    tool: tool,
-                    deviceType: deviceType,
-                    source: 'pixy-website',
-                    maxDevices: maxDevices
-                },
-                settings: {
-                    successUrl: 'https://pixy-tools.netlify.app/?success=true',
-                    displayMode: 'overlay',
-                    allowLogout: false
-                }
-            });
+            try {
+                // Paddle checkout with settings and custom data
+                // Note: Email will be in webhook from Paddle, not in customData
+                Paddle.Checkout.open({
+                    items: [{ 
+                        priceId: productId, 
+                        quantity: 1 
+                    }],
+                    customData: {
+                        tool: tool,
+                        deviceType: deviceType,
+                        source: 'pixy-website',
+                        maxDevices: maxDevices
+                    },
+                    settings: {
+                        successUrl: 'https://pixy-tools.netlify.app/?success=true',
+                        displayMode: 'overlay',
+                        allowLogout: false
+                    },
+                    onError: function(error) {
+                        console.error('❌ Paddle Checkout Error:', error);
+                        alert('Checkout error: ' + (error.message || 'Unknown error. Please try again.'));
+                    }
+                });
+            } catch (error) {
+                console.error('❌ Error opening checkout:', error);
+                alert('Failed to open checkout. Please try again or contact support.');
+            }
         }
         
         // Handle URL parameters (from Revit License Manager)
