@@ -420,9 +420,10 @@
                         maxDevices: maxDevices
                     },
                     settings: {
-                        successUrl: 'https://pixy-tools.netlify.app/?success=true',
+                        successUrl: 'https://pixy-tools.netlify.app/',
                         displayMode: 'overlay',
-                        allowLogout: false
+                        allowLogout: false,
+                        theme: 'light'
                     },
                     onError: function(error) {
                         console.error('❌ Paddle Checkout Error:', error);
