@@ -370,6 +370,17 @@
                 return;
             }
             
+            // Get customer email from user input (optional but recommended)
+            // This ensures we have the email even if Paddle doesn't send it in webhook
+            let customerEmail = '';
+            const emailInput = prompt('Please enter your email address for license delivery:');
+            if (emailInput && emailInput.includes('@')) {
+                customerEmail = emailInput.trim();
+            }
+            
+            // Calculate max devices based on device type
+            const maxDevices = deviceType === 'multi' ? 3 : 1;
+            
             // Paddle checkout with settings and custom data
             Paddle.Checkout.open({
                 items: [{ 
@@ -379,7 +390,9 @@
                 customData: {
                     tool: tool,
                     deviceType: deviceType,
-                    source: 'pixy-website'
+                    source: 'pixy-website',
+                    email: customerEmail, // Include email in custom data
+                    maxDevices: maxDevices // Include max devices
                 },
                 settings: {
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
