@@ -374,6 +374,7 @@
             const maxDevices = deviceType === 'multi' ? 3 : 1;
             
             // Paddle checkout with settings and custom data
+            // Note: Email will be in webhook from Paddle, not in customData
             Paddle.Checkout.open({
                 items: [{ 
                     priceId: productId, 
@@ -389,10 +390,6 @@
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
                     displayMode: 'overlay',
                     allowLogout: false
-                },
-                onCheckoutCompleted: function(data) {
-                    // Email will be in webhook, this is just for logging
-                    console.log('Checkout completed:', data);
                 }
             });
         }
