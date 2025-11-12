@@ -392,6 +392,20 @@
             const maxDevices = deviceType === 'multi' ? 3 : 1;
             
             try {
+                // Validate price ID format
+                if (!productId || !productId.startsWith('pri_')) {
+                    console.error('❌ Invalid Price ID format:', productId);
+                    alert('Invalid product configuration. Please contact support.');
+                    return;
+                }
+                
+                console.log('📦 Checkout data:', {
+                    priceId: productId,
+                    tool: tool,
+                    deviceType: deviceType,
+                    maxDevices: maxDevices
+                });
+                
                 // Paddle checkout with settings and custom data
                 // Note: Email will be in webhook from Paddle, not in customData
                 Paddle.Checkout.open({
@@ -412,11 +426,13 @@
                     },
                     onError: function(error) {
                         console.error('❌ Paddle Checkout Error:', error);
-                        alert('Checkout error: ' + (error.message || 'Unknown error. Please try again.'));
+                        console.error('Error details:', JSON.stringify(error, null, 2));
+                        alert('Checkout error: ' + (error.message || error.detail || 'Unknown error. Please try again.'));
                     }
                 });
             } catch (error) {
                 console.error('❌ Error opening checkout:', error);
+                console.error('Error stack:', error.stack);
                 alert('Failed to open checkout. Please try again or contact support.');
             }
         }
