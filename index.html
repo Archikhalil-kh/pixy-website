@@ -387,7 +387,12 @@
                 },
                 settings: {
                     successUrl: 'https://pixy-tools.netlify.app/?success=true',
-                    displayMode: 'overlay'
+                    displayMode: 'overlay',
+                    allowLogout: false
+                },
+                onCheckoutCompleted: function(data) {
+                    // Email will be in webhook, this is just for logging
+                    console.log('Checkout completed:', data);
                 }
             });
         }
