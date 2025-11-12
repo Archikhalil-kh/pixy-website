@@ -335,12 +335,10 @@
     </div>
 
     <script>
-        // Initialize Paddle
-        // TODO: Change to 'production' when going live
-        // Paddle.Environment.set('production'); // Uncomment for production
-        Paddle.Environment.set('sandbox'); // Remove this line in production
+        // Initialize Paddle - PRODUCTION MODE
+        Paddle.Environment.set('production');
         Paddle.Setup({ 
-            token: 'test_bdea29de48efaf52098077ef913', // TODO: Replace with production token
+            token: 'pdl_live_apikey_01k71qs1w2g0cecm90d9pk1x45', // Production API Key
             eventCallback: function(event) {
                 console.log('Paddle Event:', event);
                 if (event.name === 'checkout.completed') {
@@ -349,15 +347,15 @@
             }
         });
         
-        // Product IDs mapping
+        // Price IDs mapping - PRODUCTION
         const productIds = {
             pattern: {
-                single: 'pri_01k8m17mzg6awe7w1nddveeh4h',
-                multi: 'pri_01k8m3kjjqk6gdcetkn489rn4y'
+                single: 'pri_01k9wdd11de6qc3ba65jzf1vkd', // Pattern Generators - Single Device
+                multi: 'pri_01k71qe0bev5pbq594zzgcw0a8'    // Pattern Generators - Multi-Devices
             },
             filter: {
-                single: 'pri_01k8m40znqe2bf2aj6wymnmwk6',
-                multi: 'pri_01k8m3zf1gn0aq6nfer5hxmn1v'
+                single: 'pri_01k9wdn9894mj89resg6n4z4vm', // Selection Filter - Single Device
+                multi: 'pri_01k9wdqw4mwcx0k8ck3n4nr35h'   // Selection Filter - Multi-Devices
             },
         };
         
