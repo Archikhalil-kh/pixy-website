@@ -338,7 +338,8 @@
         // Initialize Paddle - PRODUCTION MODE
         Paddle.Environment.set('production');
         Paddle.Setup({ 
-            token: 'pdl_live_apikey_01k71qs1w2g0cecm90d9pk1x45', // Production API Key
+            // Client Token for frontend (different from API Key)
+            token: 'live_1ddffc10cdabaa6c476516d5a8d', // Production Client Token
             eventCallback: function(event) {
                 console.log('Paddle Event:', event);
                 if (event.name === 'checkout.completed') {
